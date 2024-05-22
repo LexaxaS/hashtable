@@ -59,7 +59,7 @@ Crc32 - очень популярная хеш функция, работает 
 
 ### FNV
 
-Fowler–Noll–Vo. Я выбрал ее, так как она довольно простая и при этом неплохо себя показывает. Почитать о ней можно [здесь](https://en.wikipedia.org/wiki/Fowler%E2%80%93Noll%E2%80%93Vo_hash_function).
+Fowler–Noll–Vo. Простая и эффективная (https://en.wikipedia.org/wiki/Fowler%E2%80%93Noll%E2%80%93Vo_hash_function).
 
 На С выглядит так:
 
