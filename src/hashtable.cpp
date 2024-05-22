@@ -1,4 +1,5 @@
 #include "hashtable.hpp"
+#include "mystrcmp.hpp"
 
 // Aiden: maybe use uint64_t for size? (or use size_t everywhere?)
 
@@ -48,7 +49,7 @@ error_t findElement (HashTable* ht, size_t listIndex, Elem_t elem)
 
     for (int elemIndex = 0; elemIndex < ht->lists[listIndex].size; elemIndex++)
         {
-        if (! strcmp(elem, ht->lists[listIndex].ptr[elemIndex].value))
+        if (! mystrcmp(elem, ht->lists[listIndex].ptr[elemIndex].value))
             {
             ht->lists[listIndex].ptr[elemIndex].count += 1;
 
@@ -68,7 +69,16 @@ error_t fillHashTable (HashTable* ht, Text* text)
         {
         uint64_t listIndex = ht->hashFunction(text->lines[i].string, text->lines[i].length); 
 
-        listIndex %= ht->size;
+        asm volatile 
+        (
+         "and %1, %0\n\t"
+        
+         : "+rm" (listIndex)
+        
+         : "rm" (ht->size - 1)
+        );
+
+        // listIndex %= ht->size;
 
         if (findElement(ht, listIndex, text->lines[i].string) == NOT_FOUND)
             {
@@ -143,7 +153,7 @@ double calculateLoadFactor (size_t bucketsQuantity, hashFunction_t hashFunction,
             }
         }
 
-    printf("variance: %lg\n", varianceFactor / bucketsQuantity);
+    // printf("variance: %lg\n", varianceFactor / bucketsQuantity);
 
     DestroyText(&text);
     DestroyHashTable(&ht);
