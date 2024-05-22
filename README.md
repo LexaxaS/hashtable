@@ -157,14 +157,11 @@ x mod 2^n <=> x & (2^n - 1)
 Напишем это при помощи inline assembly
 
 ```
-asm volatile 
-        (
-         "and %1, %0\n\t"
+"and %1, %0\n\t"
 
-         : "+rm" (hash)
+: "+rm" (hash)
 
-         : "rm" (htSize - 1)
-        );
+: "rm" (htSize - 1)
 ```
 
 Результаты:
